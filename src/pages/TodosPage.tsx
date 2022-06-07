@@ -6,17 +6,9 @@ import {ToDoList} from "../components/ToDoList";
 declare var confirm: (question: string) => boolean;
 
 const TodosPage:React.FC = () => {
-    const [todos, setTodos] = useState<ITodo[]>([]);
 
-    useEffect(() => {
-        const saved = JSON.parse(localStorage.getItem("todos") || '[]') as ITodo[]
-
-        setTodos(saved)
-    }, [])
-
-    useEffect(() => {
-        localStorage.setItem("todos", JSON.stringify(todos))
-    }, [todos])
+    const initialState = JSON.parse(localStorage.getItem('todos') || '[]') as ITodo[]
+    const [todos, setTodos] = useState<ITodo[]>(initialState);
 
     const addHandler = (title: string) => {
         const newToDo: ITodo = {
@@ -43,6 +35,10 @@ const TodosPage:React.FC = () => {
             setTodos(prev => prev.filter(todo => todo.id !== id))
         }
     }
+
+    useEffect(() => {
+        localStorage.setItem("todos", JSON.stringify(todos))
+    }, [todos])
 
     return (
         <>
